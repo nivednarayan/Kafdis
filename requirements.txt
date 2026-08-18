@@ -2,3 +2,4 @@ fastapi
 uvicorn
 redis
 prometheus-client
+kafka-python

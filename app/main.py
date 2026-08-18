@@ -5,6 +5,7 @@ from app.limiter import is_allowed
 from pydantic import BaseModel
 from metrics import allowed_count, rejected_count
 from prometheus_client import make_asgi_app
+from app.producer import emit_event
 
 class RateLimitRequest(BaseModel):
     client_id: str
@@ -23,8 +24,10 @@ async def request(request: RateLimitRequest):
     result = await is_allowed(redis_client, request.client_id, request.limit, request.window_seconds)
     if result: 
         allowed_count.labels(client_id=request.client_id).inc()
+        emit_event(request.client_id, True, request.limit, request.window_seconds)
     else:
         rejected_count.labels(client_id=request.client_id).inc()
+        emit_event(request.client_id, False, request.limit, request.window_seconds)
         raise HTTPException(status_code=429, detail="Too many requests")
 
     return {"allowed": True, "message": "Request allowed"}        
