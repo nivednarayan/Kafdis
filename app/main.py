@@ -1,4 +1,5 @@
 import redis
+import os
 from fastapi import FastAPI
 from fastapi import HTTPException
 from app.limiter import is_allowed
@@ -30,4 +31,4 @@ async def request(request: RateLimitRequest):
         emit_event(request.client_id, False, request.limit, request.window_seconds)
         raise HTTPException(status_code=429, detail="Too many requests")
 
-    return {"allowed": True, "message": "Request allowed"}        
+    return {"allowed": True, "message": "Request allowed", "instance": os.getenv("HOSTNAME")}        

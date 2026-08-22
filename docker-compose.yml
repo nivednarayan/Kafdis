@@ -1,8 +1,15 @@
 services:
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:z
+    depends_on:
+      - app
+
   app:
     build: .
-    ports: 
-      - "8000:8000"
     environment:
       REDIS_URL: redis://redis:6379
     depends_on:
