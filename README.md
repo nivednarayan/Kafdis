@@ -56,4 +56,5 @@ curl -X POST http://localhost:8080/check \
 | Error rate | 0% |
 
 ## Dashboard
+<img width="1919" height="930" alt="Screenshot From 2026-08-28 19-43-00" src="https://github.com/user-attachments/assets/6bb4e385-900a-4d1c-aee8-6eea7152f2be" />
 
